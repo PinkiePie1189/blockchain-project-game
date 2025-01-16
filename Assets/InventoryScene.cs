@@ -111,13 +111,14 @@ public class InventoryScene : MonoBehaviour
                     Bytes = address
                 }
             });
-        // Debug.Log(accounts.Result?.ToArray());
 
         if (accounts.WasSuccessful)
         {
             //var res = accounts.Result?.ToArray();
-            Debug.Log("lol");
             var result = accounts.Result;
+
+
+            int accountIdx = 0;
 
             foreach (var account in result) {
                 
@@ -137,14 +138,24 @@ public class InventoryScene : MonoBehaviour
                     if (!string.IsNullOrEmpty(upgradeString)) {
                         var newObject = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                         newObject.transform.SetParent(transform);
-                        newObject.transform.position = transform.position;
+
+                        var bounds = newObject.GetComponent<RectTransform>().rect;
+                        
+                        Debug.Log(bounds.width);
+                        Debug.Log(bounds.height);
+                        
+                        newObject.transform.position = transform.position + new Vector3(
+                            (accountIdx % 3) * (bounds.width + 1.5f) , -(accountIdx / 3) * (bounds.height + 1.0f) , 0.0f);
                         newObject.GetComponent<InventoryItem>().itemName = nft.Name;
                         newObject.GetComponent<InventoryItem>().itemUpgrade = Int32.Parse(queryDictionary.Get("upgrade"));
+                        newObject.GetComponent<InventoryItem>().nftAddress = new PublicKey(account.PublicKey);
                         newObject.GetComponent<InventoryItem>().updateItem();
                     }
-                    
-                    
-                   
+
+                    accountIdx++;
+
+
+
                 }
             }
         }

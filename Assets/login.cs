@@ -159,62 +159,7 @@ public class login : MonoBehaviour
         
         /*
 
-        var pubkey = new PublicKey("9J8ntNdbFkicKQrTiJi2HXNW2PkCevdWZp8CMd5Zubdu");
-        var privkey = new PrivateKey(new byte[]
-        {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        }); // placeholder
-        
-        
-        var account = new Account(privkey.KeyBytes, pubkey.KeyBytes);
 
-        var programId = new PublicKey("8fSxs8gMJK58c1sXfdMCbGq5EDj5X2Tbin8WerjLYkzD");
-        
-        
-        byte[] methodIdentifier = SHA256.Create()
-            .ComputeHash(Encoding.UTF8.GetBytes("global:get_pings"))
-            .Take(8) // Anchor uses the first 8 bytes of the hash
-            .ToArray();
-        
-        // Derive PDA
-        var seed = Encoding.UTF8.GetBytes("pings"); // Seed as bytes
-
-        // Find Program Address
-        bool success = PublicKey.TryFindProgramAddress(
-            new List<byte[]> { seed },
-            programId,
-            out PublicKey pda,
-            out byte bump
-            
-        );
-        
-        Debug.Log(pda.ToString());
-
-        // 3. Define accounts for the instruction
-        var accounts = new List<AccountMeta>
-        {
-            
-            AccountMeta.Writable(pda, isSigner: false),// Wallet account
-            AccountMeta.ReadOnly(pubkey, isSigner: true),
-        };
-
-        // 4. Build the instruction
-        var instruction = new TransactionInstruction
-        {
-            ProgramId = programId,
-            Keys = accounts,
-            Data = methodIdentifier
-        };
-
-        // 5. Get the recent blockhash
-        var blockhash = await rpcClient.GetLatestBlockHashAsync();
-
-        // 6. Create the transaction
-        var transaction = new TransactionBuilder()
-            .SetFeePayer(account)
-            .SetRecentBlockHash(blockhash.Result.Value.Blockhash)
-            .AddInstruction(instruction)
-            .Build(account);
 
         // 8. Send the transaction
         var result = await rpcClient.SendTransactionAsync(transaction);

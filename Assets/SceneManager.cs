@@ -25,16 +25,34 @@ public class SceneManager : MonoBehaviour
 
     public void SwitchScene(GameObject newScene)
     {
+        
+
         if (currentScene != null)
+        {
+            if (currentScene.GetComponent<InventoryScene>() != null)
+            {
+                foreach (Transform child in currentScene.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
             currentScene.SetActive(false);
+        }
+
         currentScene = newScene;
         currentScene.SetActive(true);
 
         {
             var invScene = currentScene.GetComponent<InventoryScene>();
+            var statsScene = currentScene.GetComponent<StatsScene>();
             if (invScene != null)
             {
                 invScene.init();
+            }
+
+            if (statsScene != null)
+            {
+                statsScene.init();
             }
         }
     }
