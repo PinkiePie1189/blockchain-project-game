@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Solana.Unity.KeyStore;
+using Solana.Unity.Metaplex.NFT.Library;
 using Solana.Unity.SDK;
 using Solana.Unity.Programs.Utilities;
 using Solana.Unity.Rpc.Models;
@@ -12,6 +14,8 @@ using Solana.Unity.Wallet;
 using Solana.Unity.Programs;
 using Solana.Unity.Rpc;
 using Solana.Unity.Rpc.Builders;
+using Solana.Unity.SDK.Nft;
+using Solana.Unity.Wallet.Utilities;
 using UnityEngine;
 
 public class login : MonoBehaviour
@@ -118,6 +122,42 @@ public class login : MonoBehaviour
 
     public async void Login()
     {
+        
+        IRpcClient rpc = ClientFactory.GetClient(Cluster.DevNet);
+
+        var accounts = await rpc.GetProgramAccountsAsync(
+            "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
+            Commitment.Finalized,
+            null,
+            new List<MemCmp>
+            {
+                new MemCmp
+                {
+                    Offset = 0,
+                    Bytes = "2"
+                },
+                new MemCmp
+                {
+                    Offset = 1,
+                    Bytes = "9J8ntNdbFkicKQrTiJi2HXNW2PkCevdWZp8CMd5Zubdu"
+                }
+            });
+        // Debug.Log(accounts.Result?.ToArray());
+
+        if (accounts.WasSuccessful)
+        {
+            //var res = accounts.Result?.ToArray();
+            Debug.Log("lol");
+            Debug.Log(accounts.Result[0]);
+        }
+
+        /*foreach (var token in arr)
+        {
+            Debug.Log(token.PublicKey);
+            break;
+        }*/
+        
+        /*
 
         var pubkey = new PublicKey("9J8ntNdbFkicKQrTiJi2HXNW2PkCevdWZp8CMd5Zubdu");
         var privkey = new PrivateKey(new byte[]
@@ -206,7 +246,7 @@ public class login : MonoBehaviour
         else
         {
             Debug.LogError($"Transaction failed: {result.Reason}");
-        }
+        } */
         
         
     }
